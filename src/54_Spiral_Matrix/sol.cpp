@@ -7,125 +7,22 @@ using namespace std;
 class Solution {
 public:
     vector<int> spiralOrder(vector<vector<int> >& matrix) {
-        unordered_map<pair<int, int>, bool> dict;
-        int row = -1;
-        int col = -1;
-        vector<int> ret;
-
-        int size = matrix.size();
-        if(0 == size)
-        {
-            return ret;
-        }
-
-        int dir = 0;
-        bool quit_flag = false;
-
-        while(true)
-        {
-            if(0 == dir) // right, next is down
-            {
-                ++col;
-                ++row;
-                while(col < size)
-                {
-                    pair<int, int> point = make_pair(row, col);
-                    if(dict.find(point) != dict.end())
-                    {
-                        ret.push_back(matrix[row][col]);
-                        dict[point] = true;
-                        quit_flag = false;
-                    }
-                    else
-                    {
-                        if(quit_flag)
-                        {
-                            return ret;
-                        }
-                        dir = 1;
-                        quit_flag = true;
-                        break;
-                    }
-                    ++col;
-                }
-            }
-            else if(1 == dir) // down, next is left
-            {
-                --col;
-                ++row;
-                while(row < size)
-                {
-                    pair<int, int> point = make_pair(row, col);
-                    if(dict.find(point) != dict.end())
-                    {
-                        ret.push_back(matrix[row][col]);
-                        dict[point] = true;
-                        quit_flag = false;
-                    }
-                    else
-                    {
-                        if(quit_flag)
-                        {
-                            return ret;
-                        }
-                        dir = 2;
-                        quit_flag = true;
-                        break;
-                    }
-                    ++row;
-                }
-            }
-            else if(2 == dir) // left, next is up
-            {
-                --row;
-                --col;
-                while(0 <= col)
-                {
-                    pair<int, int> point = make_pair(row, col);
-                    if(dict.find(point) != dict.end())
-                    {
-                        ret.push_back(matrix[row][col]);
-                        dict[point] = true;
-                        quit_flag = false;
-                    }
-                    else
-                    {
-                        if(quit_flag)
-                        {
-                            return ret;
-                        }
-                        dir = 3;
-                        quit_flag = true;
-                        break;
-                    }
-                }
-            }
-            else if(3 == dir) // up, next is right
-            {
-                ++col;
-                --row;
-                while(0 <= row)
-                {
-                    pair<int, int> point = make_pair(row, col);
-                    if(dict.find(point) != dict.end())
-                    {
-                        ret.push_back(matrix[row][col]);
-                        dict[point] = true;
-                        quit_flag = false;
-                    }
-                    else
-                    {
-                        if(quit_flag)
-                        {
-                            return ret;
-                        }
-                        dir = 0;
-                        quit_flag = true;
-                        break;
-                    }
-                }
-            }
-        }
+        vector<int> ans;
+		if (matrix.size() == 0) return  ans;
+		int m = matrix.size(),n=matrix[0].size();
+		int row =(m >> 1 )+1 ,cnt=0 ,tot=n*m;
+		for (int k = 0; k < row; k++)
+		{
+			for (int i = k; i < n - k && cnt<tot; i++,cnt++)		
+				ans.push_back(matrix[k][i]);							
+			for (int i = k + 1; i < m - k && cnt<tot; i++, cnt++)
+				ans.push_back(matrix[i][n - k - 1]);
+			for (int i = n - k - 2; i >= k &&cnt<tot; i--, cnt++)
+				ans.push_back(matrix[m - k - 1][i]);
+			for (int i = m - k - 2; i > k && cnt<tot; i--, cnt++)
+				ans.push_back(matrix[i][k]);
+		}
+		return ans;
     }
 };
 
