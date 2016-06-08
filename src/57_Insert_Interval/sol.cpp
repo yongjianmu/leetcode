@@ -19,11 +19,12 @@ struct Interval {
 
 class Solution {
     public:
-        vector<Interval> merge(vector<Interval>& intervals) {
+        vector<Interval> insert(vector<Interval>& intervals, Interval newInterval) {
             vector<Interval> ret;
             int size = intervals.size();
             if(0 == size)
             {
+                ret.push_back(newInterval);
                 return ret;
             }
 
@@ -43,6 +44,19 @@ class Solution {
                     {
                         dict[intervals[i].start] = intervals[i].end;
                     }
+                }
+            }
+
+            if(dict.find(newInterval.start) == dict.end())
+            {
+                dict[newInterval.start] = newInterval.end;
+                key_list.push_back(newInterval.start);
+            }
+            else
+            {
+                if(dict[newInterval.start] < newInterval.end)
+                {
+                    dict[newInterval.start] = newInterval.end;
                 }
             }
 
@@ -73,9 +87,9 @@ class Solution {
 
 int main()
 {
-    Interval i1(1, 4);
-    Interval i2(1, 5);
-    Interval i3(8, 10);
+    Interval i1(1, 3);
+    Interval i2(6, 9);
+    Interval i3(2, 5);
     Interval i4(15, 18);
 
     vector<Interval> input;
@@ -85,7 +99,7 @@ int main()
     //input.push_back(i4);
 
     Solution sol;
-    vector<Interval> result = sol.merge(input);
+    vector<Interval> result = sol.insert(input, i3);
     for(int i = 0; i < result.size(); ++i)
     {
         cout << result[i].start << ", " << result[i].end << endl;
