@@ -38,6 +38,12 @@ public:
             int mid = (rowL + rowR) >> 1;
             if(matrix[mid][col - 1] < target)
             {
+                if(row - 1 == mid)
+                {
+                    retRow = mid;
+                    break;
+                }
+
                 if(matrix[mid + 1][col - 1] >= target)
                 {
                     retRow = mid + 1;
@@ -50,6 +56,12 @@ public:
             }
             else if(matrix[mid][col - 1] > target)
             {
+                if(0 == mid || matrix[mid][0] <= target)
+                {
+                    retRow = mid;
+                    break;
+                }
+
                 if(matrix[mid - 1][col - 1] <= target)
                 {
                     retRow = mid - 1;
@@ -113,7 +125,7 @@ int main()
     matrix.push_back(row2);
     matrix.push_back(row3);
 
-    int target = 3;
+    int target = 10;
     Solution sol;
     cout << sol.searchMatrix(matrix, target) << endl;
 
