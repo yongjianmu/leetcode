@@ -33,43 +33,35 @@ public:
             t_map[*str_iter] = true;
         }
 
+        int* len = new int[s_size];
+        memset(len, 0, s_size * sizeof(int));
         unordered_map<char, bool>* s_map = new unordered_map<char, bool>[s_size];
-        vector<int> pos;
-        vector<int> len;
 
         for(int i = 0; i < s_size; ++i)
         {
-            for(int j = 0; j < pos.size(); ++j)
+            for(int j = 0; j <= i; ++j)
             {
-                if(t_size > s_map[pos[j]].size())
+                if(t_size > s_map[j].size())
                 {
                     if(true == t_map[s[i]])
                     {
-                        s_map[pos[j]][s[i]] = true;
+                        s_map[j][s[i]] = true;
                     }
                     ++len[j];
                 }
 
             }
-
-            if(true == t_map[s[i]])
-            {
-                pos.push_back(i);
-                len.push_back(1);
-                s_map[i][s[i]] = true;
-            }
-
         }
 
         int min_len = s_size + 1;
         int start_pos = -1;
-        for(int i = 0; i < pos.size(); ++i)
+        for(int i = 0; i < s_size; ++i)
         {
-            if(t_size == s_map[pos[i]].size())
+            if(t_size == s_map[i].size())
             {
                 if(min_len > len[i])
                 {
-                    start_pos = pos[i];
+                    start_pos = i;
                     min_len = len[i];
                 }
             }
@@ -80,6 +72,7 @@ public:
             ret = s.substr(start_pos, min_len);
         }
 
+        delete [] len;
         delete [] s_map;
 
         return ret;
@@ -88,8 +81,8 @@ public:
 
 int main()
 {
-    string s = "ADOBECODEBANC";
-    string t = "ABC";
+    string s = "A";
+    string t = "A";
     Solution sol;
     cout << sol.minWindow(s, t) << endl;
     return 0;
