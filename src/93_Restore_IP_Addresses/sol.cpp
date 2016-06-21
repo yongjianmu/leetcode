@@ -24,14 +24,15 @@ public:
             return false;
         }
 
+        if(curr.length() > 1 && '0' == curr[0])
+        {
+            return false;
+        }
+
         int num = 0;
         for(int i = 0; i < curr.length(); ++i)
         {
-            if(i > 0 && 0 == curr[0])
-            {
-                return false;
-            }
-            num = num * 10 + curr[i];
+            num = num * 10 + (curr[i] - '0');
         }
 
         return num <= 255;
@@ -59,7 +60,7 @@ public:
         }
 
         int step = 3 < s.length() - pos ? 3 : s.length() - pos;
-        for(int i = 0; i < step; ++i)
+        for(int i = 1; i <= step; ++i)
         {
             string sub = s.substr(pos, pos + i);
             if(isValid(sub))
