@@ -58,16 +58,13 @@ public:
             }
         }
 
-        int step = 3 < s.length() - 1 - pos ? 3 : s.length() - 1 - pos;
-        for(int i = pos; i <= step; ++i)
+        int step = 3 < s.length() - pos ? 3 : s.length() - pos;
+        for(int i = 0; i < step; ++i)
         {
-            string sub = s.substr(pos, i);
-            cout << sub << endl;
-            cout << dot << endl;
-            cout << curr << endl;
+            string sub = s.substr(pos, pos + i);
             if(isValid(sub))
             {
-                solve(i, dot + 1, sub + ".", s);
+                solve(pos + i, dot + 1, curr + sub + ".", s);
             }
         }
     }
