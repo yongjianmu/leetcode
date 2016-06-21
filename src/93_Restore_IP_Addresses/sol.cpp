@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -18,6 +19,11 @@ public:
 
     bool isValid(string curr)
     {
+        if(curr.length() > 3)
+        {
+            return false;
+        }
+
         int num = 0;
         for(int i = 0; i < curr.length(); ++i)
         {
@@ -33,9 +39,14 @@ public:
 
     void solve(int pos, int dot, string curr, string s)
     {
+        if(3 < dot)
+        {
+            return;
+        }
+
         if(3 == dot)
         {
-            if(pos == s.length() - 1)
+            if(pos > s.length() - 1)
             {
                 return;
             }
@@ -47,9 +58,17 @@ public:
             }
         }
 
-        for(int i = curr.length(); i < s.length() - 1; ++i)
+        int step = 3 < s.length() - 1 - pos ? 3 : s.length() - 1 - pos;
+        for(int i = pos; i <= step; ++i)
         {
-            solve(i, dot + 1, s.substr(pos, i) + ".", s);
+            string sub = s.substr(pos, i);
+            cout << sub << endl;
+            cout << dot << endl;
+            cout << curr << endl;
+            if(isValid(sub))
+            {
+                solve(i, dot + 1, sub + ".", s);
+            }
         }
     }
 
@@ -71,6 +90,7 @@ int main()
     string input = "25525511135";
     Solution sol;
     vector<string> result = sol.restoreIpAddresses(input);
+    cout << "#### Result ####" << endl;
     for(int i = 0; i < result.size(); ++i)
     {
         cout << result[i] << ", ";
