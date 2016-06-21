@@ -62,7 +62,7 @@ public:
         int step = 3 < s.length() - pos ? 3 : s.length() - pos;
         for(int i = 1; i <= step; ++i)
         {
-            string sub = s.substr(pos, pos + i);
+            string sub = s.substr(pos, i);
             if(isValid(sub))
             {
                 solve(pos + i, dot + 1, curr + sub + ".", s);
