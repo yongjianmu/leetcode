@@ -10,6 +10,7 @@
 #include <deque>
 #include <algorithm>
 #include <climits>
+#include <cstdlib>
 #include <iostream>
 
 using namespace std;

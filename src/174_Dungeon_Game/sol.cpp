@@ -7,7 +7,7 @@ public:
         int col = dungeon[0].size();
         vector<vector<int> > dp(row, vector<int>(col, 0));
 
-        dp[row - 1][col - 1] = max(0 - dungeon[row - 1][row - 1], 0);
+        dp[row - 1][col - 1] = max(0 - dungeon[row - 1][col - 1], 0);
         cout << "dungeon[" << row - 1 << "][" << col - 1 << "]: " << dungeon[row - 1][col - 1] << endl;
         cout << "dp[" << row - 1 << "][" << col - 1 << "]: " << dp[row - 1][col - 1] << endl;
 
