@@ -22,24 +22,28 @@ class Solution {
 public:
     void solve(unordered_map<int, bool>& mp, vector<vector<int> >& ret, int start, vector<int>& curr, int n, int k, int sum)
     {
-        if(0 == k)
+        if(0 == k || start > 9)
         {
             return;
         }
 
         if(1 == k && !mp[start] && start + sum == n)
         {
-            cout << "3: " << n - sum<< endl;
             curr.push_back(n - sum);
             ret.push_back(curr);
             curr.pop_back();
             return;
         }
 
-        for(int i = start; i <= n - sum; ++i)
+        for(int i = start; i <= 9; ++i)
         {
-            cout << "2: " << i << endl;
-            if(!mp[i] && sum + i  < n)
+            if(1 == k && !mp[i] && i + sum == n)
+            {
+                curr.push_back(i);
+                ret.push_back(curr);
+                curr.pop_back();
+            }
+            else if(!mp[i] && sum + i  < n)
             {
                 mp[i] = true;
                 curr.push_back(i);
@@ -61,7 +65,6 @@ public:
 
         for(int i = 1; i <= n / k; ++i)
         {
-            cout << "1: " << i << endl;
             mp[i] = true;
             vector<int> curr;
             curr.push_back(i);
