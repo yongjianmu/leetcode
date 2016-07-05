@@ -14,25 +14,61 @@ Output: [-34, -14, -10, -10, 10]
 
 class Solution {
 public:
-    vector<int> ret;
-
-    void solve(string input)
-    {
-        vector<int> op;
-        for(int i = 0; i < input.length(); ++i)
-        {
-            if('*' == input[i] || '+' == input[i] || '-' == input[i])
-            {
-                op.push_back(i);
-            }
-
-        }
-    }
+    unordered_map<string, vector<int> > mp;
 
     vector<int> diffWaysToCompute(string input) {
-        solve(input);
+        if(mp.find(input) != mp.end())
+        {
+            return mp[input];
+        }
+
+        vector<int> ret;
+        if(0 == input.length())
+        {
+            return ret;
+        }
+
+        for(int i = 0; i < input.length(); ++i)
+        {
+            char c = input[i];
+            if('*' == c || '+' == c || '-' == c)
+            {
+                vector<int> left = diffWaysToCompute(input.substr(0, i));
+                vector<int> right = diffWaysToCompute(input.substr(i + 1));
+                for(int l : left)
+                {
+                    for(int r : right)
+                    {
+                        if('+' == c)
+                        {
+                            ret.push_back(l + r);
+                        }
+                        else if('-' == c)
+                        {
+                            ret.push_back(l - r);
+                        }
+                        else if('*' == c)
+                        {
+                            ret.push_back(l * r);
+                        }
+                    }
+                }
+            }
+        }
+
+        if(0 == ret.size())
+        {
+            ret.push_back(stoi(input, nullptr, 0));
+        }
+        mp[input] = ret;
+
         return ret;
     }
 };
+
+int main()
+{
+    return 0;
+}
 
 
