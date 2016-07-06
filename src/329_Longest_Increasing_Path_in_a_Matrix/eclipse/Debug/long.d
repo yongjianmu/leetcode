@@ -1,1 +1,0 @@
-long.d: ../long.c
