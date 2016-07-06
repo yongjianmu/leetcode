@@ -9,63 +9,33 @@ findMedian() -> 2
 */
 
 class MedianFinder {
+	priority_queue<int> small, large;
 public:
-    int mTotalNum;
-    multiset<int> mSet;
+	// Adds a number into the data structure.
+	void addNum(int num) {
+		if (!large.empty() && -large.top() < num)
+			large.push(-num);
+		else
+			small.push(num);
 
-    MedianFinder()
-    {
-        mTotalNum = 0;
-    }
+		if (small.size() - large.size() == 2) {
+			large.push(-small.top());
+			small.pop();
+		}
+		else if (small.size() - large.size() == -2) {
+			small.push(-large.top());
+			large.pop();
+		}
+	}
 
-    // Adds a number into the data structure.
-    void addNum(int num) {
-        ++mTotalNum;
-        mSet.insert(num);
-    }
-
-    // Returns the median of current data stream
-    double findMedian() {
-        double ret = 0.0;
-        if (0 == mTotalNum % 2)
-        {
-            int mid_right = mTotalNum >> 1;
-            int cnt = 0;
-            int left = 0, right = 0;
-            for(auto iter = mSet.begin(); iter != mSet.end(); ++iter)
-            {
-                if(cnt == mid_right - 1)
-                {
-                    left = *iter;
-                }
-
-                if (cnt == mid_right)
-                {
-                    right = *iter;
-                    break;
-                }
-                ++cnt;
-            }
-
-            ret = static_cast<double> (left + right) / 2.0;
-        }
-        else
-        {
-            int mid = mTotalNum >> 1;
-            int cnt = 0;
-            for (auto iter = mSet.begin(); iter != mSet.end(); ++iter)
-            {
-                if (cnt == mid)
-                {
-                    ret = *iter * 1.0;
-                    break;
-                }
-                ++cnt;
-            }
-        }
-        return ret;
-    }
+	// Returns the median of current data stream
+	double findMedian() {
+		if (small.size() > large.size()) return small.top();
+		else if (small.size() < large.size()) return -large.top();
+		return (small.top() - large.top()) / 2.0;
+	}
 };
+
 
 // Your MedianFinder object will be instantiated and called as such:
 // MedianFinder mf;
