@@ -104,14 +104,69 @@ public:
         int value = INT_MIN;
         for(int i = 1; i <= k; ++i)
         {
-            int len1 = i, len2 = k - i;
+            int len1 = i - 1, len2 = k - i - 1;
+
+            if(len1 > dp1[len1].size() - 1 || len2 > dp2[len2].size() - 1)
+            {
+                continue;
+            }
+
             int value_cur = 0;
+            vector<int> arr_cur;
             vector<int> cur1 = dp1[len1];
             vector<int> cur2 = dp2[len2];
 
             int start1 = 0, start2 = 0;
             while(start1 + start2 <= k - 2)
             {
+                if(dp1[len1][start1] >= dp2[len2][start2])
+                {
+                    if(start1 < len1 - 1)
+                    {
+                        arr_cur.push_back(dp1[len1][start1]);
+                        ++start1;
+                    }
+                    else
+                    {
+                        arr_cur.push_back(dp2[len2][start2]);
+                        ++start2;
+                    }
+                }
+                else
+                {
+                    if(start2 < len2 - 1)
+                    {
+                        arr_cur.push_back(dp2[len2][start2]);
+                        ++start2;
+                    }
+                    else
+                    {
+                        arr_cur.push_back(dp2[len2][start2]);
+                        ++start1;
+                    }
+                }
+            }
+            
+            for(int j = 0; j < k; ++j)
+            {
+                value_cur = value_cur * 10 + arr_cur[j];
+            }
+
+            value = max(value, value_cur);
+            cout << value << endl;
+        }
+
+        if(0 == value)
+        {
+            ret.push_back(0);
+        }
+        else
+        {
+            while(0 != value)
+            {
+                int x = value % 10;
+                ret.push_back(x);
+                value /= 10;
             }
         }
 
