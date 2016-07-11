@@ -6,7 +6,7 @@ Given envelopes = [[5,4],[6,4],[6,7],[2,3]], the maximum number of envelopes you
 
 bool cmp(pair<int, int> p1, pair<int, int> p2)
 {
-    return p1.first != p2.first ? p1.first < p2.first : p1.second < p2.second;
+    return p1.first != p2.first ? p1.first < p2.first : p1.second > p2.second;
 }
 
 class Solution {
