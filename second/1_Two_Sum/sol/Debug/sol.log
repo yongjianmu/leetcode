@@ -1,0 +1,6 @@
+﻿  sol.cpp
+c:\users\james\utah\leetcode\second\1_two_sum\sol\sol.cpp(27): warning C4018: '<': signed/unsigned mismatch
+c:\users\james\utah\leetcode\second\1_two_sum\sol\sol.cpp(32): warning C4018: '<': signed/unsigned mismatch
+c:\users\james\utah\leetcode\second\1_two_sum\sol\sol.cpp(55): warning C4018: '<': signed/unsigned mismatch
+  sol.vcxproj -> C:\Users\james\utah\leetcode\second\1_Two_Sum\sol\Debug\sol.exe
+  sol.vcxproj -> C:\Users\james\utah\leetcode\second\1_Two_Sum\sol\Debug\sol.pdb (Full PDB)
