@@ -39,7 +39,6 @@ public:
         }
         else
         {
-            pos = i;
             int l = size - 1;
             for(i = size - 1; i > pos; --i)
             {
