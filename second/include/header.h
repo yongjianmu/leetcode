@@ -56,8 +56,8 @@ void printVectorStr2(vector<vector<string> > vec)
     {
         for(int j = 0; j < vec[0].size(); ++j)
         {
-            cout << vec[i][j] << ", ";
+            cout << vec[i][j] << endl;
         }
-        cout << endl;
+        cout << "#####################" << endl;
     }
 }
