@@ -17,6 +17,46 @@
 
 using namespace std;
 
+
+template <class T>
+void printVector1D(vector<T> vec, bool separate_line = false)
+{
+    cout << "#### Result ####" << endl;
+    for(int i = 0; i < vec.size(); ++i)
+    {
+        if(separate_line)
+        {
+            cout << vec[i] << endl;
+        }
+        else
+        {
+            cout << vec[i] << ", ";
+        }
+    }
+    cout << endl;
+}
+
+template <class T>
+void printVector2D(vector<vector<T> > vec, bool separate_line = false)
+{
+    cout << "#### Result ####" << endl;
+    for(int i = 0; i < vec.size(); ++i)
+    {
+        for(int j = 0; j < vec[0].size(); ++j)
+        {
+            if(separate_line)
+            {
+                cout << vec[i][j] << endl;
+            }
+            else
+            {
+                cout << vec[i][j] << ", ";
+            }
+        }
+        cout << "#####################" << endl;
+    }
+}
+
 void printVectorInt1(vector<int> vec)
 {
     cout << "#### Result ####" << endl;
