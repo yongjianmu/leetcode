@@ -19,6 +19,7 @@ using namespace std;
 
 void printVectorInt1(vector<int> vec)
 {
+    cout << "#### Result ####" << endl;
     for(int i = 0; i < vec.size(); ++i)
     {
         cout << vec[i] << ", ";
@@ -28,15 +29,16 @@ void printVectorInt1(vector<int> vec)
 
 void printVectorStr1(vector<string> vec)
 {
+    cout << "#### Result ####" << endl;
     for(int i = 0; i < vec.size(); ++i)
     {
-        cout << vec[i] << ", ";
+        cout << vec[i] << endl;
     }
-    cout << endl;
 }
 
 void printVectorInt2(vector<vector<int> > vec)
 {
+    cout << "#### Result ####" << endl;
     for(int i = 0; i < vec.size(); ++i)
     {
         for(int j = 0; j < vec[0].size(); ++j)
@@ -49,6 +51,7 @@ void printVectorInt2(vector<vector<int> > vec)
 
 void printVectorStr2(vector<vector<string> > vec)
 {
+    cout << "#### Result ####" << endl;
     for(int i = 0; i < vec.size(); ++i)
     {
         for(int j = 0; j < vec[0].size(); ++j)
