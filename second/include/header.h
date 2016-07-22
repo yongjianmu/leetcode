@@ -42,7 +42,7 @@ void printVector2D(vector<vector<T> > vec, bool separate_line = false)
     cout << "#### Result ####" << endl;
     for(int i = 0; i < vec.size(); ++i)
     {
-        for(int j = 0; j < vec[0].size(); ++j)
+        for(int j = 0; j < vec[i].size(); ++j)
         {
             if(separate_line)
             {
