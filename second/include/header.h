@@ -18,6 +18,45 @@
 using namespace std;
 
 
+/**********************************************************************
+ * Tree Node functions
+ **********************************************************************/
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+void deleteTree(TreeNode* head, bool print_flag = false)
+{
+    queue<TreeNode*> q;
+    if(NULL != head)
+    {
+        q.push(head);
+    }
+
+    while(!q.empty())
+    {
+        TreeNode* del = q.front();
+        q.pop();
+        if(print_flag)
+        {
+            cout << del->val << ", ";
+        }
+        if(NULL != del->left)
+        {
+            q.push(del->left);
+        }
+        if(NULL != del->right)
+        {
+            q.push(del->right);
+        }
+        delete del;
+    }
+    cout << endl;
+}
 
 /**********************************************************************
  * List Node functions

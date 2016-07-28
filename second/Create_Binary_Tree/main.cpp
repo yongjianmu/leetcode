@@ -149,6 +149,7 @@ public:
         while(!q.empty())
         {
             TreeNode* del = q.front();
+            q.pop();
             if(NULL != del->left)
             {
                 q.push(del->left);
@@ -157,7 +158,6 @@ public:
             {
                 q.push(del->right);
             }
-            q.pop();
             delete del;
         }
     }
