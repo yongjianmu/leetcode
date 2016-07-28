@@ -29,6 +29,12 @@ struct TreeNode {
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
+struct TreeLinkNode {
+    TreeLinkNode *left;
+    TreeLinkNode *right;
+    TreeLinkNode *next;
+};
+
 void deleteTree(TreeNode* head, bool print_flag = false)
 {
     queue<TreeNode*> q;
