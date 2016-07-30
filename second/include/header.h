@@ -10,6 +10,8 @@
 #include <queue>
 #include <deque>
 #include <algorithm>
+#include <numeric>
+#include <functional>
 #include <climits>
 #include <cstdlib>
 #include <iostream>
