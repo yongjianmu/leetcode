@@ -2,32 +2,71 @@
 
 class Solution {
 public:
-    int mySqrt(int x) {
-        if(0 == x)
+    int sqrt(int x) {
+        long long left = 0, right = (x / 2) + 1;
+        while (left <= right) 
         {
-            return 0;
+            long long mid = (left + right) / 2;
+            long long sq = mid * mid;
+            if (sq == x) return mid;
+            else if (sq < x) left = mid + 1;
+            else right = mid - 1;
         }
+        return right;
+    }
 
-        long long left = 1, right = x >> 1;
-        while(left < right)
+    double sqrt(double x)
+    {
+        if(x < 1)
         {
-            long long mid = left + ((right - left) >> 1);
-            long long sqr = mid * mid;
-            if(sqr == x)
+            double left = x, right = 1;
+            while(left < right)
             {
-                return mid;
+                double mid = (left + right) / 2.0;
+                double sq = mid * mid;
+                if(sq == x) return mid;
+                else if(sq < x)
+                {
+                    left = mid;
+                }
+                else
+                {
+                    right = mid;
+                }
             }
-            else if(sqr < x)
-            {
-                left = mid + 1;
-            }
-            else
-            {
-                right = mid - 1;
-            }
+            return left;
         }
-
-        long long sqr = left * left;
-        return sqr > x ? static_cast<int> (left - 1) : static_cast<int> (left);
+        else
+        {
+            double left = 1, right = x / 2.0 + 1;
+            while(left < right)
+            {
+                double mid = (left + right) / 2.0;
+                double sq = mid * mid;
+                if(sq == x) return mid;
+                else if(sq < x)
+                {
+                    left = mid;
+                }
+                else
+                {
+                    right = mid;
+                }
+            }
+            return right;
+        }
+        return -1;
     }
 };
+
+int main()
+{
+    //double input = 0.09;
+    double input = 900.00;
+    Solution sol;
+    double result = sol.sqrt(input);
+    printResult();
+    cout << result << endl;
+
+    return 0;
+}

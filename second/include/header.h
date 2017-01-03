@@ -1,3 +1,6 @@
+#ifndef __HEADER_H__
+#define __HEADER_H__
+
 #include <vector>
 #include <string>
 #include <sstream>
@@ -16,6 +19,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <random>
+#include <assert.h>
 
 using namespace std;
 
@@ -159,3 +163,4 @@ void printVector2D(vector<vector<T> > vec, bool separate_line = false)
     }
 }
 
+#endif
