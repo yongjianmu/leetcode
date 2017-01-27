@@ -1,16 +1,17 @@
 #include "../include/header.h"
 
-struct TreeNode
-{
-    int val;
-    TreeNode* left;
-    TreeNode* right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
+//struct TreeNode
+//{
+//    int val;
+//    TreeNode* left;
+//    TreeNode* right;
+//    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+//};
 
 class BinaryTree
 {
-private:
+//private:
+public:
     TreeNode* mRoot;
 
     void preOrderNonRec(TreeNode* root, vector<int>& vec)
@@ -158,7 +159,6 @@ private:
         }
     }
 
-public:
     BinaryTree()
     {
         mRoot = NULL;
@@ -270,6 +270,41 @@ public:
     }
 };
 
+void dfsBST2Sum(TreeNode* tree1, TreeNode* tree2, int target, vector<pair<int, int> >& ret, unordered_set<string>& dict)
+{
+    if(NULL == tree1 || NULL == tree2) return;
+    string cur = to_string(tree1->val) + to_string(tree2->val);
+    if(dict.find(cur) != dict.end()) return;
+    dict.insert(cur);
+
+    int sum = tree1->val + tree2->val;
+    if(target == sum)
+    {
+        ret.push_back({tree1->val, tree2->val});
+        dfsBST2Sum(tree1->left, tree2->right, target, ret, dict);
+        dfsBST2Sum(tree1->right, tree2->left, target, ret, dict);
+    }
+    else if(target < sum)
+    {
+        dfsBST2Sum(tree1->left, tree2, target, ret, dict);
+        dfsBST2Sum(tree1, tree2->left, target, ret, dict);
+    }
+    else
+    {
+        dfsBST2Sum(tree1->right, tree2, target, ret, dict);
+        dfsBST2Sum(tree1, tree2->right, target, ret, dict);
+    }
+}
+
+vector<pair<int, int> > BST2Sum(TreeNode* tree1, TreeNode* tree2, int target)
+{
+    vector<pair<int, int> > ret;
+    unordered_set<string> dict;
+    dfsBST2Sum(tree1, tree2, target, ret, dict);
+    return ret;
+}
+
+
 int main()
 {
     vector<int> input = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -286,6 +321,15 @@ int main()
         cout << endl;
     }
     cout << endl;
+
+    cout << "Test BST2Sum" << endl;
+    BinaryTree bt2;
+    bt2.createBSTTree(input);
+    vector<pair<int, int> > result_pr = BST2Sum(bt.mRoot, bt2.mRoot, 5);
+    for(auto iter = result_pr.begin(); iter != result_pr.end(); ++iter)
+    {
+        cout << iter->first << ", " << iter->second << ", " << endl;
+    }
 
     return 0;
 }

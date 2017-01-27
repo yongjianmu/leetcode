@@ -76,8 +76,8 @@ int findCountsinSortedArray(vector<int>& nums, int target)
     while(left <= right)
     {
         int mid = left + ((right - left) >> 1);
-        if(nums[mid] >= target) right = mid - 1;
-        else left = mid + 1;
+        if(nums[mid] < target) left = mid + 1;
+        else right = mid - 1;
     }
     start = left;
 
@@ -87,7 +87,7 @@ int findCountsinSortedArray(vector<int>& nums, int target)
 int main()
 {
     vector<int> nums = {-4,-3,-2,-1,0,0,0,0,0,1,1,1,2,3};
-    int result = findCountsinSortedArray(nums, -4);
+    int result = findCountsinSortedArray(nums, 1);
     printResult();
     cout << result << endl;
     return 0;

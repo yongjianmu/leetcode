@@ -12,20 +12,30 @@ public:
         ListNode* new_head = new ListNode(-1);
         new_head->next = head;
         ListNode* pre = new_head;
-        ListNode* p = pre->next;
-        ListNode* q = p->next;
-        while(NULL != q)
+        ListNode* q = head;
+        ListNode* tmp = NULL;
+        while(NULL != q->next)
         {
-            ListNode* ptr_next = q->next;
-            q->next = pre->next;
-            pre->next = q;
-            q = ptr_next;
+            tmp = q->next;
+            q->next = tmp->next;
+            tmp->next = pre->next;
+            pre->next = tmp;
         }
 
-        p->next = NULL;
         pre = new_head->next;
         delete new_head;
         return pre;
+    }
+
+    ListNode* reverseRecursive(ListNode* head)
+    {
+        if(NULL == head || NULL == head->next)
+        {return head;}
+
+        ListNode* new_head = reverseList(head->next);
+        head->next->next = head;
+        head->next = NULL;
+        return new_head;
     }
 };
 

@@ -34,7 +34,7 @@ public:
                     right = mid;
                 }
             }
-            return left;
+            return right;
         }
         else
         {
@@ -62,9 +62,10 @@ public:
 int main()
 {
     //double input = 0.09;
-    double input = 900.00;
+    double input = 910.00;
     Solution sol;
     double result = sol.sqrt(input);
+    cout << "reference: " << sqrt(input) << endl;
     printResult();
     cout << result << endl;
 
