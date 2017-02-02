@@ -35,15 +35,15 @@ vector<pair<int, int> > drawCircle1(int r)
 vector<pair<int, int> > drawCircle2(int r)
 {
     set<pair<int, int> > st;
-    set<pair<int, int> > vis;
+    unordered_set<string> vis;
     vector<pair<int, int> > ret;
     queue<pair<int, int> > q;
     int x = 0, y = r, r2 = r * r;
     q.push({x, y});
+    vis.insert(to_string(x) + "#" + to_string(y));
     while(!q.empty())
     {
         pair<int, int> cur = q.front(); q.pop();
-        vis.insert({cur.first, cur.second});
         cout << cur.first << ", " << cur.second << endl;
         int pro = cur.first * cur.first + cur.second * cur.second;
         if(pro == r2)
@@ -56,22 +56,26 @@ vector<pair<int, int> > drawCircle2(int r)
             st.insert({cur.second, -cur.first});
             st.insert({-cur.second, cur.first});
             st.insert({-cur.second, -cur.first});
-            if(cur.first + 1 < r && vis.find({cur.first + 1, y}) == vis.end())
+            if((cur.first + 1 < r) && (cur.first + 1 <= cur.second) && (vis.find(to_string(cur.first + 1) + "#" + to_string(cur.second)) == vis.end()))
             {
                 q.push({cur.first + 1, cur.second});
+                vis.insert(to_string(cur.first + 1) + "#" + to_string(cur.second));
             }
-            if(cur.second - 1 > 0 && vis.find({cur.second, cur.second - 1}) == vis.end())
+            if((cur.second - 1 > 0) && (cur.second - 1 >= cur.first) && (vis.find(to_string(cur.first) + "#" + to_string(cur.second - 1)) == vis.end()))
             {
                 q.push({cur.first, cur.second - 1});
+                vis.insert(to_string(cur.first) + "#" + to_string(cur.second - 1));
             }
         }
-        else if(pro < r2 && cur.first + 1 < r && vis.find({cur.first + 1, cur.second}) == vis.end())
+        else if((pro < r2) && (cur.first + 1 <= cur.second) && (cur.first + 1 < r) && (vis.find(to_string(cur.first + 1) + "#" + to_string(cur.second)) == vis.end()))
         {
             q.push({cur.first + 1, cur.second});
+            vis.insert(to_string(cur.first + 1) + "#" + to_string(cur.second));
         }
-        else if(cur.second - 1 > 0 && vis.find({cur.first, cur.second - 1}) == vis.end())
+        else if((cur.second - 1 > 0) && (cur.second - 1 >= cur.first) && (vis.find(to_string(cur.first) + "#" + to_string(cur.second - 1)) == vis.end()))
         {
             q.push({cur.first, cur.second - 1});
+            vis.insert(to_string(cur.first) + "#" + to_string(cur.second - 1));
         }
     }
 
