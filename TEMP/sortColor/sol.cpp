@@ -54,11 +54,11 @@ void sortColorOptimize(vector<int>& nums)
         {
             swap(nums[non_red_start++], nums[j]);
         }
-        if(red_len > non_red_len) non_red_start = i - 1;
+        if(red_len > non_red_len) non_red_start = i - swap_len;
     }
     
-    cout << "last non red" << non_red_start << endl;
-    printVector1D(nums);
+    //cout << "last non red " << non_red_start << endl;
+    //printVector1D(nums);
 
     // Parse blue
     int non_blue_end = n - 1;
@@ -81,7 +81,7 @@ void sortColorOptimize(vector<int>& nums)
         {
             swap(nums[non_blue_end--], nums[j]);
         }
-        if(blue_len > non_blue_len) non_blue_end = i + 1;
+        if(blue_len > non_blue_len) non_blue_end = i + swap_len;
     }
 }
 
