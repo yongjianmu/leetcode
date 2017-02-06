@@ -17,19 +17,19 @@ void set_bits(int start, int len)
     int curLevel = maxLevel;
     while(curLevel >= 0)
     {
+        cout << s << ", " << e << endl;
         for(int i = s; i <= e; ++i)
         {
-            if(curLevel == maxLevel)
-            {
-                A[curLevel][i] = 1;
-            }
-            else
-            {
-                A[curLevel][i] = ((A[curLevel + 1][2 * i]) && A[curLevel + 1][2 * i + 1]) ? 1 : 0;
-            }
+            A[curLevel][i] = 1;
         }
+        int s_buddy = s + (s % 2 == 1 ? -1 : 1);
+        int e_buddy = e + (e % 2 == 1 ? -1 : 1);
+        int s_bit = A[curLevel][s] && A[curLevel][s_buddy];
+        int e_bit = A[curLevel][e] && A[curLevel][e_buddy];
         --curLevel;
         s >>= 1; e >>= 1;
+        if(0 == s_bit) ++s;
+        if(0 == e_bit) --e;
     }
 }
 
