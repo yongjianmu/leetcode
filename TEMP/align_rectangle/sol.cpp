@@ -11,13 +11,14 @@ private:
     int mHeight;
 };
 
-vector<pair<int, int> > alignRectangle(vector<textBox>& boxes, int pageWidth)
+vector<pair<int, double> > alignRectangle(vector<textBox>& boxes, int pageWidth)
 {
-    int curVerticalStart = 0, curHorizontalEnd = 0, n = boxes.size(), cnt = 0, cur_mid = 0, lastPos = 0;
+    int curHorizontalEnd = 0, n = boxes.size(), cnt = 0, lastPos = 0;
+    double cur_mid = 0.0, curVerticalStart = 0.0;
     bool new_line = true;
-    vector<pair<int, int> > ret(n, {0, 0});
-    vector<pair<int, int> > lastLine(1, {pageWidth, 0});
-    vector<pair<int, int> > curLine;
+    vector<pair<int, double> > ret(n, {0, 0});
+    vector<pair<int, double> > curLine(1, {pageWidth, 0});
+    vector<pair<int, double> > lastLine;
 
     for(int i = 0; i < n; ++i)
     {
@@ -33,35 +34,42 @@ vector<pair<int, int> > alignRectangle(vector<textBox>& boxes, int pageWidth)
             curHorizontalEnd = 0;
         }
 
+        curVerticalStart = lastLine[lastPos].second;
         while(lastLine[lastPos].first < w + curHorizontalEnd)
         {
             curVerticalStart = max(curVerticalStart, lastLine[lastPos].second);
             ++lastPos;
         }
 
-        int diff = curVerticalStart - (cur_mid - (h >> 1));
-        if(diff > 0)
+        double diff = curVerticalStart - (cur_mid - (static_cast<double> (h) / 2.0));
+        if(diff > 0.0)
         {
-            curVerticalStart += diff;
             cur_mid += diff;
         }
 
         curHorizontalEnd += w;
-        curLine.push_back({curHorizontalEnd, 0});
+        curLine.push_back({curHorizontalEnd, 0.0});
 
-        if(i < n - 1 && curHorizontalEnd + boxes[i + 1].getWidth() > pageWidth)
+        if((i < n - 1 && curHorizontalEnd + boxes[i + 1].getWidth() > pageWidth) || i == n - 1)
         {
+            cout << "cur_mid: " << cur_mid << endl;
             int k = i - curLine.size() + 1;
             int l = 0;
             for(auto& c : curLine)
             {
-                int d = boxes[k++].getHeight() >> 1;
+                double d = static_cast<double> (boxes[k].getHeight()) / 2.0;
                 c.second = cur_mid + d;
                 ret[cnt++] = {l, cur_mid - d};
+                l += boxes[k++].getWidth();
             }
             // compare curLine to lastLine to fix the empty pos
-            while(lastPos < lastLine.size())
+            if(curHorizontalEnd < pageWidth)
             {
+                if(lastLine[lastPos].first == curHorizontalEnd) ++lastPos;
+                while(lastPos < lastLine.size())
+                {
+                    curLine.push_back(lastLine[lastPos++]);
+                }
             }
             new_line = true;
         }
@@ -86,7 +94,7 @@ int main()
     }
 
     int pageWidth = 7;
-    vector<pair<int, int> > result = alignRectangle(inputBox, pageWidth);
+    vector<pair<int, double> > result = alignRectangle(inputBox, pageWidth);
     printResult();
     for(auto& r : result)
     {
