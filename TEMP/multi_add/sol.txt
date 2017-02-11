@@ -1,0 +1,19 @@
+
+
+if you translate increment code to assembly it's pseudocode will be like:
+
+1-mov ax,mem[c]
+2-inc ax
+3-mov mem[c],ax
+
+if we have 2 thread consider this scenario:
+
+thread 1: line 1
+thread 2: line (1-2-3) for 99 times
+thread 1: line (2-3)
+thread 2: line 1
+thread 1: line (1-2-3) for remaining 99 times
+thread 2: line (2-3) fro the last time
+
+now the value of c is 2 so minimum is 2
+
