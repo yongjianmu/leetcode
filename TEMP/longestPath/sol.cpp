@@ -3,30 +3,31 @@
 class Solution
 {
 public:
-    int dfs(vector<vector<int> >& matrix, int row, int col, int x, int y, vector<vector<int> >& dp, vector<pair<int, int> >& dir)
+    void dfs(vector<vector<int> >& matrix, int row, int col, int x, int y, vector<vector<bool> >& dp, vector<pair<int, int> >& dir, vector<int>& cur_path, vector<int>& ret)
     {
-        if(0 < dp[x][y]) return dp[x][y];
-        int ret = 1;
+        cur_path.push_back(matrix[x][y]);
+        if(ret.size() < cur_path.size()) ret = cur_path;
+
         for(auto d : dir)
         {
             int nx = x + d.first, ny = y + d.second;
-            if(nx < 0 || nx >= row || ny < 0 || ny >= col || matrix[nx][ny] < matrix[x][y] || 0 == dp[nx][ny]) continue;
-            dp[x][y] = 0;
-            ret = max(ret, 1 + dfs(matrix, row, col, nx, ny, dp, dir));
-            dp[x][y] = -1;
+            if(nx < 0 || nx >= row || ny < 0 || ny >= col || matrix[nx][ny] < matrix[x][y] || true == dp[nx][ny]) continue;
+            dp[x][y] = true;
+            dfs(matrix, row, col, nx, ny, dp, dir, cur_path, ret);
+            dp[x][y] = false;
         }
-        dp[x][y] = ret;
-        return ret;
+        cur_path.pop_back();
     }
 
-    int longestPath(vector<vector<int> >& matrix)
+    vector<int> longestPath(vector<vector<int> >& matrix)
     {
+        vector<int> ret;
         int row = matrix.size();
-        if(0 == row) return 0;
+        if(0 == row) return ret;
         int col = matrix[0].size();
-        if(0 == col) return 0;
+        if(0 == col) return ret;
 
-        vector<vector<int> > dp(row, vector<int>(col, -1));
+        vector<vector<bool> > dp(row, vector<bool>(col, false));
         //vector<vector<bool> > vis(row, vector<int>(col, false));
         vector<pair<int, int> > dir = {
             {0, -1},
@@ -39,12 +40,12 @@ public:
             {1, 1}
         };
 
-        int ret = 1;
         for(int i = 0; i < row; ++i)
         {
             for(int j = 0; j < col; ++j)
             {
-                ret = max(ret, dfs(matrix, row, col, i, j, dp, dir));
+                vector<int> cur_path;
+                dfs(matrix, row, col, i, j, dp, dir, cur_path, ret);
             }
         }
         return ret;
@@ -54,13 +55,13 @@ public:
 int main()
 {
     vector<vector<int> > input = {
-        {8,2,4},
-        {0,7,1},
-        {3,7,9}
+        {1,4,4},
+        {4,7,4},
+        {3,4,9}
     };
     Solution sol;
-    int result = sol.longestPath(input);
+    vector<int> result = sol.longestPath(input);
     printResult();
-    cout << result << endl;
+    printVector1D(result);
     return 0;
 }

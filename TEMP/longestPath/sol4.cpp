@@ -10,28 +10,40 @@ struct node
 class Solution
 {
 public:
-    node dfs(vector<vector<int> >& matrix, int row, int col, int x, int y, vector<vector<node> >& dp, vector<pair<int, int> >& dir)
+    node dfs(vector<vector<int> >& matrix, int row, int col, int x, int y, vector<vector<node> >& dp, vector<vector<bool> >& vis, vector<pair<int, int> >& dir)
     {
-        if(0 < dp[x][y].val) return dp[x][y];
-        int ret = 1;
+        int cur_len = 1;
         vector<int> path = {matrix[x][y]};
         for(auto d : dir)
         {
             int nx = x + d.first, ny = y + d.second;
-            if(nx < 0 || nx >= row || ny < 0 || ny >= col || matrix[nx][ny] < matrix[x][y] || 0 == dp[nx][ny].val) continue;
-            dp[x][y].val = 0;
-            node cur = dfs(matrix, row, col, nx, ny, dp, dir);
-            if(ret < cur.val + 1)
+            if(nx < 0 || nx >= row || ny < 0 || ny >= col || abs(matrix[nx][ny] - matrix[x][y]) <= 3 || vis[nx][ny]) continue;
+            if(matrix[nx][ny] > matrix[x][y] && dp[nx][ny].val > 0)
             {
-                ret = cur.val + 1;
+                if(cur_len < dp[nx][ny].val + 1)
+                {
+                    cur_len = dp[nx][ny].val + 1;
+                    path = dp[nx][ny].path;
+                    path.insert(path.begin(), matrix[x][y]);
+                }
+                continue;
+            }
+
+            vis[x][y] = true;
+            node cur = dfs(matrix, row, col, nx, ny, dp, vis, dir);
+            vis[x][y] = false;
+            if(cur_len < cur.val + 1)
+            {
+                cur_len = cur.val + 1;
                 path = cur.path;
                 path.insert(path.begin(), matrix[x][y]);
             }
-            dp[x][y].val = -1;
         }
-        dp[x][y].val = ret;
-        dp[x][y].path = path;
-        return dp[x][y];
+        
+        node ret;
+        ret.val = cur_len;
+        ret.path = path;
+        return ret;
     }
 
     vector<int> longestPath(vector<vector<int> >& matrix)
@@ -42,6 +54,7 @@ public:
         if(0 == col) return vector<int>(0);
 
         vector<vector<node> > dp(row, vector<node>(col, node()));
+        vector<vector<bool> > vis(row, vector<bool>(col, false));
         vector<pair<int, int> > dir = {
             {0, -1},
             {0, 1},
@@ -59,7 +72,8 @@ public:
         {
             for(int j = 0; j < col; ++j)
             {
-                node cur = dfs(matrix, row, col, i, j, dp, dir);
+                node cur = dfs(matrix, row, col, i, j, dp, vis, dir);
+                dp[i][j] = cur;
                 if(cur.val > maxV)
                 {
                     maxV = cur.val;
@@ -74,8 +88,8 @@ public:
 int main()
 {
     vector<vector<int> > input = {
-        {6,4,4},
-        {4,4,7},
+        {8,2,4},
+        {0,6,1},
         {3,7,9}
     };
     Solution sol;
