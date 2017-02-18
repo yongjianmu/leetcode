@@ -85,12 +85,39 @@ void sortColorOptimize(vector<int>& nums)
     }
 }
 
+void sortColorTowPointer(vector<int>& nums)
+{
+    int n = nums.size();
+    if(1 >= n) return;
+
+    // first round, swap red
+    int left = 0, right = n - 1;
+    while(left < right)
+    {
+        while(nums[left] == 0) ++left;
+        while(nums[right] != 0) --right;
+        if(left >= right) break;
+        swap(nums[left++], nums[right--]);
+    }
+
+    // second round, swap blue
+    right = n - 1;
+    while(left < right)
+    {
+        while(nums[left] != 2) ++left;
+        while(nums[right] == 2) --right;
+        if(left >= right) break;
+        swap(nums[left++], nums[right--]);
+    }
+}
+
 int main()
 {
     vector<int> input = {1,1,1,0,1,1,0,0,2,0,0,1,1,2,1,1,1,2,0,0,2,0,2,1,1,0,1,0,0,1,0,2,1,2,2,2,1,0};
     //vector<int> input = {1,2,1,0,0,0,0};
     //vector<int> input = {2,0,0,0,0,1,2,2};
-    sortColorOptimize(input);
+    //sortColorOptimize(input);
+    sortColorTowPointer(input);
     printResult();
     printVector1D(input);
 
