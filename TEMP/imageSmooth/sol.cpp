@@ -143,6 +143,63 @@ void smooth2(vector<vector<int> >& matrix)
     }
 }
 
+
+// smooth3, do not consider about overflow, just use one extra variable
+void smooth3(vector<vector<int> >& matrix)
+{
+    int row = matrix.size();
+    if(0 == row) return;
+    int col = matrix[0].size();
+    if(0 == col) return;
+
+    // first step, change row by row
+    /*
+    a b c d 
+    e f g h 
+    i j k l 
+    m n o p 
+    =>
+    a+e b+f c+g d+h 
+    a+e+i b+f+j c+g+k d+h+l 
+    e+i+m f+j+n g+k+o h+l+p 
+    i+m j+n k+o l+p
+    */
+
+    int lastRow = 0;
+    for(int j = 0; j < col; ++j)
+    {
+        lastRow = 0;
+        for(int i = 0; i < row; ++i)
+        {
+            int tmp = lastRow;
+            lastRow = matrix[i][j];
+            matrix[i][j] += tmp;
+            if(i < row - 1) matrix[i][j] += matrix[i + 1][j];
+        }
+    }
+
+    // calc col by col
+    int lastCol = 0;
+    for(int i = 0; i < row; ++i)
+    {
+        lastCol = 0;
+        for(int j = 0; j < col; ++j)
+        {
+            int tmp = lastCol;
+            lastCol = matrix[i][j];
+            matrix[i][j] += tmp;
+            if(j < col - 1) matrix[i][j] += matrix[i][j + 1];
+            // calc avg
+            int cnt = 9;
+            if((i == 0 && j == 0) || (i == 0 && j == col - 1) || (i == row - 1 && j == 0) || (i == row - 1 && j == col - 1)) cnt = 4;
+            else if(i == 0 || j == 0 || i == row - 1 || j == col - 1) cnt = 6;
+            matrix[i][j] /= cnt;
+        }
+    }
+}
+
+
+
 int main()
 {
     vector<vector<int> > matrix = {
@@ -164,6 +221,16 @@ int main()
     smooth2(matrix2);
     printResult();
     printVector2D(matrix2);
+
+    vector<vector<int> > matrix3 = {
+        {1,2,3,4},
+        {5,6,7,8},
+        {9,10,11,12},
+        {13,14,15,16}
+    };
+    smooth3(matrix3);
+    printResult();
+    printVector2D(matrix3);
 
     return 0;
 }
