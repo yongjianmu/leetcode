@@ -151,7 +151,7 @@ vector<pair<int, int> > drawCircle3(int r)
 int main()
 {
     cout << "Method1" << endl;
-    vector<pair<int, int> > result1 = drawCircle1(10);
+    vector<pair<int, int> > result1 = drawCircle1(1000);
     printResult();
     for(auto& r : result1)
     {
@@ -159,7 +159,7 @@ int main()
     }
 
     cout << "Method2" << endl;
-    vector<pair<int, int> > result2 = drawCircle2(10);
+    vector<pair<int, int> > result2 = drawCircle2(1000);
     printResult();
     for(auto& r : result2)
     {
@@ -167,7 +167,7 @@ int main()
     }
 
     cout << "Method3" << endl;
-    vector<pair<int, int> > result3 = drawCircle3(10);
+    vector<pair<int, int> > result3 = drawCircle3(1000);
     printResult();
     for(auto& r : result2)
     {
