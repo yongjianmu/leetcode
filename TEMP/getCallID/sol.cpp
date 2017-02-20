@@ -35,25 +35,26 @@ private:
         return pthread_mutex_unlock(&mMutex);
     }
 
-    static void cleanup_function(void* a)
-    {
-        cout << "clean up" << endl;
-    }
+    //static void cleanup_function(void* a)
+    //{
+    //    cout << "clean up" << endl;
+    //}
 
     static void* get_idx(void* x)
     {
         pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
-        pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
-        pthread_cleanup_push(cleanup_function, NULL);
+        //pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+        //pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
+        //pthread_cleanup_push(cleanup_function, NULL);
         while(true)
         {
-            pthread_testcancel();
+            //pthread_testcancel();
             sem_wait(&mGetIDSem);
             vector<int> vec = get_ids();
             for(auto v : vec) mID2.push(v);
             sem_post(&mSwitchSem);
         }
-        pthread_cleanup_pop(0);
+        //pthread_cleanup_pop(0);
         pthread_exit(NULL);
     }
 
