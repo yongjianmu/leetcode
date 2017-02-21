@@ -37,8 +37,8 @@ vector<pair<int, double> > alignRectangle(vector<textBox>& boxes, int pageWidth)
         curVerticalStart = lastLine[lastPos].second;
         while(lastLine[lastPos].first < w + curHorizontalEnd)
         {
-            curVerticalStart = max(curVerticalStart, lastLine[lastPos].second);
             ++lastPos;
+            curVerticalStart = max(curVerticalStart, lastLine[lastPos].second);
         }
 
         double diff = curVerticalStart - (cur_mid - (static_cast<double> (h) / 2.0));
