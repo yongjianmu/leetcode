@@ -104,7 +104,7 @@ vector<pair<int, int> > drawCircle3(int r)
 {
     vector<pair<int, int> > ret;
     int x = 0, y = r, r2 = r * r;
-    int pro = x * x + y * y;
+    int pro = r2;
     while(x < y)
     {
         //cout << cur.first << ", " << cur.second << endl;
@@ -135,13 +135,13 @@ vector<pair<int, int> > drawCircle3(int r)
         int diff2 = r2 - (pro - 2 * y + 1);
         if(diff1 <= diff2) 
         {
+            pro += 2 * x + 1;
             ++x;
-            pro += diff1 + r2;
         }
         else
         {
+            pro -= 2 * y - 1;
             --y;
-            pro -= r2 - diff2;
         }
     }
 
@@ -169,7 +169,7 @@ int main()
     cout << "Method3" << endl;
     vector<pair<int, int> > result3 = drawCircle3(1000);
     printResult();
-    for(auto& r : result2)
+    for(auto& r : result3)
     {
         cout << r.first << ", " << r.second << endl;
     }

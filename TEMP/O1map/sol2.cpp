@@ -34,7 +34,7 @@ public:
     {
         int idx = HASHFUNC(key);
         mBucket[idx].val = value;
-        if(mBucket[idx].index >= mLen || (mBucket[idx].index <= mLen && mIndex[mBucket[idx].index] != idx))
+        if(mBucket[idx].index >= mLen || mIndex[mBucket[idx].index] != idx)
         {
             mIndex[mLen] = idx;
             mBucket[idx].index = mLen++;
@@ -44,7 +44,7 @@ public:
     void deleteHASH(int key)
     {
         int idx = HASHFUNC(key);
-        if(mBucket[idx].index >= mLen || (mBucket[idx].index <= mLen && mIndex[mBucket[idx].index] != idx)) return;
+        if(mBucket[idx].index >= mLen || mIndex[mBucket[idx].index] != idx) return;
         mIndex[mBucket[idx].index] = -1;
         mBucket[mIndex[mLen - 1]].index = mBucket[idx].index;
         swap(mIndex[mLen - 1], mIndex[mBucket[idx].index]);
@@ -65,7 +65,7 @@ public:
         if(0 == mLen) return INT_MIN;
 
         int idx = HASHFUNC(key);
-        return (mBucket[idx].index >= mLen || (mBucket[idx].index <= mLen && mIndex[mBucket[idx].index] != idx)) ? INT_MIN : mBucket[idx].val;
+        return (mBucket[idx].index >= mLen || mIndex[mBucket[idx].index] != idx) ? INT_MIN : mBucket[idx].val;
     }
 
     void clearHash()
