@@ -43,7 +43,7 @@ private:
     static void* get_idx(void* x)
     {
         pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
-        //pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+        pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
         //pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
         //pthread_cleanup_push(cleanup_function, NULL);
         while(true)
