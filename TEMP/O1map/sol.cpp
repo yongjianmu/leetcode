@@ -24,6 +24,12 @@ public:
         mLen = -1;
     }
 
+    ~HASHMAP()
+    {
+        if(NULL != mBucket) delete[] mBucket;
+        if(NULL != mIndex) delete[] mIndex;
+    }
+
     void addHASH(int key, int value)
     {
         int idx = HASHFUNC(key);
@@ -67,9 +73,7 @@ public:
     {
         mLen = -1;
         delete[] mBucket;
-        delete[] mIndex;
         mBucket = new Node[HT_SIZE];
-        mIndex = new int[HT_SIZE];
         memset(mIndex, -1, sizeof(int) * HT_SIZE);
     }
 
