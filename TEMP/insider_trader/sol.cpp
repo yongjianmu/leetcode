@@ -16,6 +16,7 @@ struct UserAction
     string name;
     bool sell;
     int number;
+    int price;
 };
 
 class cmp
@@ -27,50 +28,33 @@ public:
     }
 };
 
-unordered_map<int, set<string> > findInsider(set<pair<int, int> >& prices, set<UserAction, cmp>& userActions)
+map<int, set<string> > findInsider(set<pair<int, int> >& prices, set<UserAction, cmp>& userActions)
 {
-    list<pair<int, int> > window;
     auto iter_ua_begin = userActions.begin();
-    unordered_map<int, set<string> > ret;
+    map<int, set<string> > ret;
     for(auto& p : prices)
     {
-        for(auto iter = window.begin(); iter != window.end(); ++iter)
-        {
-            if(iter->first + 3 < p.first)
-            {
-                window.erase(iter);
-            }
-            else
-            {
-                auto it = iter_ua_begin;
-                while(it != userActions.end())
-                {
-                    if(it->date >= p.first) break;
-                    if(iter->second < p.second) // price increased, check buy
-                    {
-                        if(it->sell) break; // sell, ignore
-                        if((it->number * (p.second - iter->second)) >= 500000)
-                        {
-                            ret[it->date].insert(it->name);
-                        }
-                    }
-                    else if(iter->second > p.second) // price decrease, check sell
-                    {
-                        if(!it->sell) break; // sell, ignore
-                        if((it->number * (iter->second - p.second)) >= 500000)
-                        {
-                            ret[it->date].insert(it->name);
-                        }
-                    }
-                    ++it;
-                }
-            }
-        }
-        window.push_back(p);
-        while(iter_ua_begin != userActions.end() && iter_ua_begin->date < window.begin()->first)
+        while(iter_ua_begin != userActions.end() && iter_ua_begin->date + 3 < p.first)
         {
             ++iter_ua_begin;
         }
+
+        auto it = iter_ua_begin;
+        while(it != userActions.end())
+        {
+            if(it->date >= p.first) break;
+            if(!it->sell && (it->number * (p.second - it->price)) >= 500000)
+            {
+                ret[it->date].insert(it->name);
+            }
+
+            if(it->sell && (it->number * (it->price - p.second)) >= 500000)
+            {
+                ret[it->date].insert(it->name);
+            }
+            ++it;
+        }
+
     }
     return ret;
 }
@@ -80,10 +64,10 @@ int main()
     string cur;
     set<pair<int, int> > prices;
     set<UserAction, cmp> userActions;
-    int lines = INT_MAX, cnt = 0;
+    vector<UserAction> userVector;
+    int lines = INT_MAX, cnt = 1;
     while(getline(cin, cur))
     {
-        cout << cur << endl;
         if(cur.length() == 0 || cnt >= lines) break;
         vector<string> temp;
         split(cur, temp, '|');
@@ -99,7 +83,7 @@ int main()
             ua.name = temp[1];
             ua.sell = temp[2] == "SELL";
             ua.number = stoi(temp[3]);
-            userActions.insert(ua);
+            userVector.push_back(ua);
             ++cnt;
         }
         else if(temp.size() == 1)
@@ -108,9 +92,18 @@ int main()
         }
     }
 
-    cout << "finish cin parse" << endl;
-    unordered_map<int, set<string> > result = findInsider(prices, userActions);
-    cout << "finish find parse" << endl;
+    for(auto& u : userVector)
+    {
+        auto iter = prices.lower_bound({u.date, 0});
+        if(iter == prices.end() || iter->first != u.date)
+        {
+            advance(iter, -1);
+        }
+        u.price = iter->second;
+        userActions.insert(u);
+    }
+
+    map<int, set<string> > result = findInsider(prices, userActions);
     for(auto iter = result.begin(); iter != result.end(); ++iter)
     {
         for(auto it = iter->second.begin(); it != iter->second.end(); ++it)
