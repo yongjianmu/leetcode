@@ -14,42 +14,41 @@ bool canErase(vector<vector<int> >& matrix, int row, int col)
     return false;
 }
 
-void dfs(int x, int y, vector<vector<int> >& matrix, int row, int col, vector<vector<bool> >& vis, unordered_map<int, pair<int, int> >& ump, 
-            int dx[], int dy[], int& sum)
+void dfs(int x, int y, vector<vector<int> >& matrix, int row, int col, vector<vector<bool> >& vis, unordered_map<int, vector<int> >& ump, int dx[], int dy[])
 {
-    ++sum;
-    vis[x][y] = true;
-    if(ump.find(y) == ump.end()) 
-    {
-        ump[y] = {x, x};
-    }
-    else
-    {
-        ump[y].first = min(ump[y].first, x);
-        ump[y].second = max(ump[y].second, x);
-    }
+    ump[y].push_back(x);
     vis[x][y] = true;
     for(int i = 0; i < 4; ++i)
     {
         int nx = x + dx[i], ny = y + dy[i];
         if(nx < 0 || nx >= row || ny < 0 || ny >= col || vis[nx][ny] || matrix[nx][ny] != matrix[x][y]) continue;
-        dfs(nx, ny, matrix, row, col, vis, ump, dx, dy, sum);
+        dfs(nx, ny, matrix, row, col, vis, ump, dx, dy);
     }
-    matrix[x][y] = -1;
 }
 
 int erase(int x, int y, vector<vector<int> >& matrix, int row, int col, bool& end_game)
 {
     vector<vector<bool> > vis(row, vector<bool>(col, false)); 
-    unordered_map<int, pair<int, int> > ump;
+    unordered_map<int, vector<int> > ump;
     int dx[] = {0,1,0,-1};
     int dy[] = {1,0,-1,0};
-    int sum = 0;
-    dfs(x, y, matrix, row, col, vis, ump, dx, dy, sum);
+    dfs(x, y, matrix, row, col, vis, ump, dx, dy);
 
+    int sum = 0;
     for(auto iter = ump.begin(); iter != ump.end(); ++iter)
     {
-        int x_max = iter->second.second, x_min = iter->second.first;
+        // update by col
+        int cnt = iter->second.size();
+        if(0 == cnt) continue;
+        sum += cnt;
+
+        int x_max = 0, x_min = row;
+        for(auto it = iter->second.begin(); it != iter->second.end(); ++it)
+        {
+            matrix[*it][iter->first] = -1;
+            x_max = max(x_max, *it);
+            x_min = min(x_min, *it);
+        }
 
         // fall down
         int x_start = x_min - 1;
@@ -79,7 +78,7 @@ int main()
     };
 
     bool flag = true;
-    int score = erase(7, 6, input, 8, 8, flag);
+    int score = erase(7, 3, input, 8, 8, flag);
     printVector2D(input);
     printResult();
     cout << score << ",  can still play? " << flag << endl;

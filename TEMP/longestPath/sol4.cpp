@@ -88,8 +88,8 @@ public:
 int main()
 {
     vector<vector<int> > input = {
-        {8,2,4},
-        {0,6,1},
+        {8,4,4},
+        {4,4,9},
         {3,7,9}
     };
     Solution sol;

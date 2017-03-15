@@ -1,4 +1,6 @@
-#include "../../second/include/header.h"
+#include <vector>
+#include <iostream>
+using namespace std;
 
 struct node
 {
@@ -80,7 +82,10 @@ int main()
     };
     Solution sol;
     vector<int> result = sol.longestPath(input);
-    printResult();
-    printVector1D(result);
+    for(auto& r : result)
+    {
+        cout << r << "=>";
+    }
+    cout << endl;
     return 0;
 }

@@ -1,4 +1,6 @@
-#include "../../second/include/header.h"
+#include <vector>
+#include <iostream>
+using namespace std;
 
 class Solution
 {
@@ -28,7 +30,6 @@ public:
         if(0 == col) return ret;
 
         vector<vector<bool> > dp(row, vector<bool>(col, false));
-        //vector<vector<bool> > vis(row, vector<int>(col, false));
         vector<pair<int, int> > dir = {
             {0, -1},
             {0, 1},
@@ -61,7 +62,10 @@ int main()
     };
     Solution sol;
     vector<int> result = sol.longestPath(input);
-    printResult();
-    printVector1D(result);
+    for(auto& r : result)
+    {
+        cout << r << "=>";
+    }
+    cout << endl;
     return 0;
 }
